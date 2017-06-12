@@ -9,16 +9,7 @@
 #include <ArduinoJson.h>
 #include "helperfunctions.h"
 #include "System.h"
-
 #include "MoodLampDriver.h"
-
-const int INIT_COLOR      = 180;
-const int INIT_BRIGHTNESS = 100;
-
-const byte PIN_RED   = 3;
-const byte PIN_GREEN = 5;
-const byte PIN_BLUE  = 6;
-
 
 
 
@@ -43,21 +34,13 @@ void get_errorMessage();  // retorna uma mensagem de erro caso a requisicao nao 
  * tambem faz o tratamento do json e retorna a uri e os parametros
  */
 System sys;
-
-MoodLamp moodlamp(PIN_RED,PIN_GREEN,PIN_BLUE);
-
-MoodLampDriver driver(&moodlamp);
+MoodLampDriver driver;
 
 
 void setup(){
 
-
   sys.begin();
-  moodlamp.begin();
- 
-  moodlamp.color(INIT_COLOR);
-  moodlamp.brightness(INIT_BRIGHTNESS);
-  
+  driver.begin();  
 }
 
 
@@ -87,7 +70,7 @@ void loop(){
 // Aqui sera codificado todo o processamento dos dispositivos
 void checkSystem(){
   
-    moodlamp.update();
+    driver.update();
   
   }
 
@@ -125,8 +108,7 @@ bool processMessage() {
 
 
 bool main_route(){
-  
- 
+   
   if (strcmp(sys.get_uri(), MAIN_ROUTE) == 0) {
     return true;
 
@@ -142,8 +124,8 @@ void get_devices(char * response) {
  JsonObject& root = jsonBuffer.createObject();
  JsonArray& devices = root.createNestedArray("devices");
  JsonObject& device_rgb = devices.createNestedObject();
- device_rgb["route"] = "/rgb";
- device_rgb["name"] = "rgblamp";                           
+ device_rgb["route"] = "/moodlamp";
+ device_rgb["name"] = "moodlamp";                           
 
 
  root.printTo(response,MAX_JSON);

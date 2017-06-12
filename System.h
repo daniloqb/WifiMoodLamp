@@ -8,7 +8,7 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 
-//#define TESTING
+#define TESTING
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
     
