@@ -12,8 +12,8 @@
 
 #include "MoodLampDriver.h"
 
-const int INIT_COLOR      = 180;
-const int INIT_BRIGHTNESS = 100;
+const int INIT_COLOR      = 360;
+const int INIT_BRIGHTNESS = 0;
 
 const byte PIN_RED   = 3;
 const byte PIN_GREEN = 5;
