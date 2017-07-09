@@ -8,35 +8,42 @@
 
 #include <aJSON.h>
 
+
+  const int INIT_COLOR      = 180;
+  const int INIT_BRIGHTNESS = 100;
+
+  const byte PIN_RED   = 3;
+  const byte PIN_GREEN = 5;
+  const byte PIN_BLUE  = 6;
+
 /*CONSTANTES DE ROTA*/
-  const char ROUTE_ROOT[]           PROGMEM =  "/";
-  const char ROUTE_DEVICE[]         PROGMEM =  "/rgb";
-  const char ROUTE_COMMANDS[]       PROGMEM =  "/rgb/commands";
-  const char ROUTE_COLOR_RED[]      PROGMEM =  "/rgb/red";
-  const char ROUTE_COLOR_ORANGE[]   PROGMEM =  "/rgb/orange";
-  const char ROUTE_COLOR_YELLOW[]   PROGMEM =  "/rgb/yellow";
-  const char ROUTE_COLOR_LIME[]     PROGMEM =  "/rgb/lime";
-  const char ROUTE_COLOR_GREEN[]    PROGMEM =  "/rgb/green";
-  const char ROUTE_COLOR_AQUA[]     PROGMEM =  "/rgb/aqua";
-  const char ROUTE_COLOR_CYAN[]     PROGMEM =  "/rgb/cyan";
-  const char ROUTE_COLOR_OCEAN[]    PROGMEM =  "/rgb/ocean";
-  const char ROUTE_COLOR_BLUE[]     PROGMEM =  "/rgb/blue";
-  const char ROUTE_COLOR_PURPLE[]   PROGMEM =  "/rgb/purple";
-  const char ROUTE_COLOR_VIOLET[]   PROGMEM =  "/rgb/violet";
-  const char ROUTE_COLOR_MAGENTA[]  PROGMEM =  "/rgb/magenta";
-  const char ROUTE_COLOR_PINK[]     PROGMEM =  "/rgb/pink";
-  const char ROUTE_COLOR_WHITE[]    PROGMEM =  "/rgb/white";
+  const char ROUTE_DEVICE[]         PROGMEM =  "/moodlamp";
+  const char ROUTE_COMMANDS[]       PROGMEM =  "/moodlamp/commands";
+  const char ROUTE_COLOR_RED[]      PROGMEM =  "/moodlamp/red";
+  const char ROUTE_COLOR_ORANGE[]   PROGMEM =  "/moodlamp/orange";
+  const char ROUTE_COLOR_YELLOW[]   PROGMEM =  "/moodlamp/yellow";
+  const char ROUTE_COLOR_LIME[]     PROGMEM =  "/moodlamp/lime";
+  const char ROUTE_COLOR_GREEN[]    PROGMEM =  "/moodlamp/green";
+  const char ROUTE_COLOR_AQUA[]     PROGMEM =  "/moodlamp/aqua";
+  const char ROUTE_COLOR_CYAN[]     PROGMEM =  "/moodlamp/cyan";
+  const char ROUTE_COLOR_OCEAN[]    PROGMEM =  "/moodlamp/ocean";
+  const char ROUTE_COLOR_BLUE[]     PROGMEM =  "/moodlamp/blue";
+  const char ROUTE_COLOR_PURPLE[]   PROGMEM =  "/moodlamp/purple";
+  const char ROUTE_COLOR_VIOLET[]   PROGMEM =  "/moodlamp/violet";
+  const char ROUTE_COLOR_MAGENTA[]  PROGMEM =  "/moodlamp/magenta";
+  const char ROUTE_COLOR_PINK[]     PROGMEM =  "/moodlamp/pink";
+  const char ROUTE_COLOR_WHITE[]    PROGMEM =  "/moodlamp/white";
 
-  const char ROUTE_DEVICE_ON[]      PROGMEM =  "/rgb/on";
-  const char ROUTE_DEVICE_OFF[]     PROGMEM =  "/rgb/off";
+  const char ROUTE_DEVICE_ON[]      PROGMEM =  "/moodlamp/on";
+  const char ROUTE_DEVICE_OFF[]     PROGMEM =  "/moodlamp/off";
 
-  const char ROUTE_COLOR_WHEEL[]    PROGMEM =  "/rgb/wheel";
-  const char ROUTE_COLOR_FADE[]     PROGMEM =  "/rgb/fade";
+  const char ROUTE_COLOR_WHEEL[]    PROGMEM =  "/moodlamp/wheel";
+  const char ROUTE_COLOR_FADE[]     PROGMEM =  "/moodlamp/fade";
 
 
-  const char  DEVICE_NAME[] PROGMEM = "rgb";
+  const char  DEVICE_NAME[] PROGMEM = "moodlamp";
 
-  const char  COMMANDS[] PROGMEM = "{\"commands\": [{\"route\": \"/rgb\",\"label\": \"rgb\",\"params\": [{\"name\": \"color\",\"type\": \"int\",\"min\": 0,\"max\": 360 },{\"name\": \"brightness\",\"type\": \"int\",\"min\": 0,\"max\": 100 }]}]}\n";
+  const char  COMMANDS[] PROGMEM = "{\"commands\": [{\"route\": \"/moodlamp\",\"label\": \"moodlamp\",\"params\": [{\"name\": \"color\",\"type\": \"int\",\"min\": 0,\"max\": 360 },{\"name\": \"brightness\",\"type\": \"int\",\"min\": 0,\"max\": 100 }]}]}\n";
 
 
   const char * DEVICE_PARAM_COLOR = "color";
@@ -50,10 +57,12 @@ class MoodLampDriver{
   
   private:
     MoodLamp * device;
+    
 
   public:
-    MoodLampDriver(MoodLamp *moodlamp);
+    MoodLampDriver();
     void begin();
+    void update();
 
 
     char * device_commands(char *msg);
@@ -66,12 +75,25 @@ class MoodLampDriver{
 };
 
 
-MoodLampDriver::MoodLampDriver(MoodLamp * moodlamp){
 
-  device = moodlamp;
+MoodLampDriver::MoodLampDriver(){
+
+device = new MoodLamp(PIN_RED,PIN_GREEN,PIN_BLUE);
 
 }
 
+void MoodLampDriver::begin(){
+
+  device->begin();
+  device->color(INIT_COLOR);
+  device->brightness(INIT_BRIGHTNESS);
+  }
+
+
+void MoodLampDriver::update(){
+
+  device->update();
+  }
 
 char * MoodLampDriver::get_name(){
 
