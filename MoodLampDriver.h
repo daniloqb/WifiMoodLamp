@@ -15,6 +15,7 @@
   const byte PIN_RED   = 3;
   const byte PIN_GREEN = 5;
   const byte PIN_BLUE  = 6;
+  const byte PIN_WHITE = 9;
 
 /*CONSTANTES DE ROTA*/
   const char ROUTE_DEVICE[]         PROGMEM =  "/moodlamp";
@@ -78,7 +79,7 @@ class MoodLampDriver{
 
 MoodLampDriver::MoodLampDriver(){
 
-device = new MoodLamp(PIN_RED,PIN_GREEN,PIN_BLUE);
+device = new MoodLamp(PIN_RED,PIN_GREEN,PIN_BLUE, PIN_WHITE );
 
 }
 
@@ -159,99 +160,116 @@ bool MoodLampDriver::process_message(System sys, char * msg){
  
     if (IsNumeric(param_color)) {                     // verifica se o valor eh numerico
       device->color(atoi(param_color));
+      device->on();
+      device->wheel(0);
       change_color = true;                          // caso esteja informa que a cor sera modificada
     
     }
     if (IsNumeric(param_brightness)) {                // faz o mesmo teste que foi feito com a cor
       device->brightness(atoi(param_brightness));
+      device->on();
+      device->fade(0);
       change_color = true;      
     }
   }  
   else if (strcmp_P(uri, ROUTE_DEVICE_OFF) == 0) {
 
-    device->brightness(0);
+    device->off();
     change_color = true;
-    device->wheel(0);
-    device->fade(0);
 
   }
 
   // ROTA QUE LIGA A LAMPADA COM OS VALORES ANTERIORES AO DESLIGA
   else if (strcmp_P(uri, ROUTE_DEVICE_ON) == 0) {
 
-    device->brightness(device->last_brightness());
+    //device->brightness(device->last_brightness());
+    device->on();
     change_color = true;
   }
    // ABAIXO ESTAO AS ROTAS DAS CORES PRE-DEFINIDAS NO SISTEMA
   else if (strcmp_P(uri, ROUTE_COLOR_RED) == 0) {                 // RED
 
     device->color(COLOR_RED);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_GREEN) == 0) {               // GREEN
 
     device->color(COLOR_GREEN);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_BLUE) == 0) {                // BLUE
 
     device->color(COLOR_BLUE);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_YELLOW) == 0) {            // YELLOW
 
     device->color(COLOR_YELLOW);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_CYAN) == 0) {              // CYAN
 
     device->color(COLOR_CYAN);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_MAGENTA) == 0) {           // MAGENTA
 
     device->color(COLOR_MAGENTA);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_ORANGE) == 0) {             // ORANGE
 
     device->color(COLOR_ORANGE);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_VIOLET) == 0) {             // VIOLET
 
     device->color(COLOR_VIOLET);
+    device->on();
     change_color = true;
   }
 
   else if (strcmp_P(uri, ROUTE_COLOR_PINK) == 0) {               // PINK
 
     device->color(COLOR_PINK);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_LIME) == 0) {             // LIME
 
     device->color(COLOR_LIME);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_AQUA) == 0) {              // AQUA
 
     device->color(COLOR_AQUA);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_OCEAN) == 0) {            // OCEAN
 
     device->color(COLOR_OCEAN);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_PURPLE) == 0) {           // PURPLE
 
     device->color(COLOR_PURPLE);
+    device->on();
     change_color = true;
   }
   else if (strcmp_P(uri, ROUTE_COLOR_WHITE) == 0) {              // WHITE
 
     device->color(COLOR_WHITE);
+    device->on();
     change_color = true;
 
   }
@@ -267,6 +285,7 @@ bool MoodLampDriver::process_message(System sys, char * msg){
     if (IsNumeric(param_speed)) {                     // verifica se o valor eh numerico
       device->wheel_speed(atoi(param_speed));
     }
+
    valid_route = true;
   }
 
